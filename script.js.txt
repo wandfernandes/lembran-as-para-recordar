@@ -9,7 +9,9 @@ const pistasOriginais = [
 
 let pistas = [];
 let indiceAtual = 0;
+let score = 0;
 let avatarSelecionado = '';
+let dificuldade = 'medio';
 
 function selecionarAvatar(avatar) {
     avatarSelecionado = avatar;
@@ -20,6 +22,8 @@ function selecionarAvatar(avatar) {
 
 function iniciarJogo() {
     let chave = document.getElementById("chave").value.trim();
+    dificuldade = document.getElementById("nivelDificuldade").value;
+
     if (chave === "") {
         alert("Digite uma chave válida!");
         return;
@@ -62,7 +66,6 @@ function mostrarPista() {
 }
 
 function verificarLocalizacao() {
-    // Coordenadas fixas para facilitar os testes
     const latUsuario = -27.5969;  // Latitude da Lagoa da Conceição
     const longUsuario = -48.4846; // Longitude da Lagoa da Conceição
     const latPista = pistas[indiceAtual].latitude;
@@ -72,6 +75,7 @@ function verificarLocalizacao() {
 
     if (distancia < 0.2) {
         desbloquearProximaPista();
+        atualizarPontuacao(10); // Adiciona 10 pontos
     } else {
         document.getElementById("mensagem").textContent = "📍 Você ainda não chegou ao local certo! Continue procurando!";
         const somIncorreto = document.getElementById("somIncorreto");
@@ -108,6 +112,11 @@ function desbloquearProximaPista() {
         document.getElementById("pista").textContent = "🎉 Parabéns! Você encontrou o tesouro romântico! 🎁";
         document.getElementById("mensagem").textContent = "";
     }
+}
+
+function atualizarPontuacao(pontos) {
+    score += pontos;
+    document.getElementById("score").textContent = `Pontuação: ${score}`;
 }
 
 function criarCorações() {
