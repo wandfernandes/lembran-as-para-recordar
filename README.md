@@ -30,4 +30,4 @@ Antes de começar, você precisará ter as seguintes ferramentas instaladas em s
 Clone o repositório:
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY_NAME.git
+git clone https://github.com/wandfernandes/lembran-as-para-recordar.git
