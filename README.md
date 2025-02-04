@@ -1,38 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caça ao Tesouro - Florianópolis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="inicio">
-        <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
-        <p>Escolha seu avatar romântico:</p>
-        <div class="avatar-selection">
-            <img src="https://example.com/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
-        </div>
-        <p>Insira sua chave de acesso:</p>
-        <input type="text" id="chave" placeholder="Digite sua chave">
-        <button onclick="iniciarJogo()">Começar</button>
-    </div>
+# 🌸 Caça ao Tesouro - Florianópolis 🌸
 
-    <div id="pista-container">
-        <h2 id="pista"></h2>
-        <p id="mensagem"></p>
-        <button onclick="verificarLocalizacao()">Verificar Localização</button>
-        <div id="mapa"></div>
-    </div>
+Bem-vindo ao **Caça ao Tesouro - Florianópolis**! Este é um jogo interativo onde os participantes exploram as belezas da cidade de Florianópolis, desvendando pistas e descobrindo locais encantadores.
 
-    <!-- Adicionando sons -->
-    <audio id="somCorreto" src="https://www.soundjay.com/button/beep-07.wav"></audio>
-    <audio id="somIncorreto" src="https://www.soundjay.com/button/beep-10.wav"></audio>
-    <audio id="musicaFundo" src="https://www.soundjay.com/nature/sounds/rain-01.mp3" loop></audio>
+## 📋 Sumário
 
-    <script src="script.js"></script>
-</body>
-</html>
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Como Jogar](#como-jogar)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+- [Contato](#contato)
+
+## 🌟 Sobre o Projeto
+
+**Caça ao Tesouro - Florianópolis** é um jogo projetado para proporcionar uma experiência divertida e educativa aos participantes. Eles devem seguir pistas para encontrar locais específicos em Florianópolis, aprendendo sobre a cultura e história da cidade enquanto jogam.
+
+## ✅ Pré-requisitos
+
+Antes de começar, você precisará ter as seguintes ferramentas instaladas em sua máquina:
+
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org)
+- Um navegador web moderno (Chrome, Firefox, Edge, etc.)
+
+## 🚀 Instalação
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/USERNAME/REPOSITORY_NAME.git
