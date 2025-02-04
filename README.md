@@ -32,6 +32,17 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+        #score-board {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        .medal {
+            background: gold;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +64,11 @@
             <p id="dica">Clique no botão para receber uma dica!</p>
             <button onclick="fornecerDica()">Receber Dica</button>
         </div>
+
+        <div id="score-board">
+            <div class="medal" id="medalha-historico">🏅 Medalha Histórica</div>
+            <div class="medal" id="medalha-natureza">🏅 Medalha Aventureiro</div>
+        </div>
     </div>
 
     <script>
@@ -69,6 +85,7 @@
         ];
 
         let indiceAtual = 0, score = 0;
+        let medalhas = { historico: false, natureza: false };
 
         function iniciarJogo() {
             let chave = document.getElementById("chave").value.trim();
@@ -80,7 +97,6 @@
             mostrarPista();
         }
 
-        // Função de embaralhamento mais confiável
         function embaralharPistas(chave) {
             let seed = chave.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
             let shuffled = [...pistas];
@@ -99,6 +115,15 @@
         function verProximaPista() {
             score += 10;
             document.getElementById("score").textContent = `Pontuação: ${score}`;
+
+            if (indiceAtual === 0) {
+                medalhas.historico = true;
+                document.getElementById("medalha-historico").style.display = "block";
+            }
+            if (indiceAtual === 5) {
+                medalhas.natureza = true;
+                document.getElementById("medalha-natureza").style.display = "block";
+            }
 
             if (++indiceAtual < pistas.length) {
                 mostrarPista();
