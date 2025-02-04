@@ -20,7 +20,7 @@
             font-size: 3em;
             margin-top: 20px;
         }
-        #login-container, #inicio, #pista-container, #medalhas-container {
+        #inicio, #pista-container, #medalhas-container {
             margin-top: 50px;
         }
         .hidden {
@@ -35,16 +35,8 @@
     </style>
 </head>
 <body>
-    <div id="login-container">
+    <div id="inicio">
         <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
-        <p>Faça login para começar sua aventura!</p>
-        <input type="text" id="usuario" placeholder="Usuário">
-        <input type="password" id="senha" placeholder="Senha">
-        <button onclick="autenticar()">Entrar</button>
-    </div>
-
-    <div id="inicio" class="hidden">
-        <h2 id="boas-vindas"></h2>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
         <button onclick="iniciarJogo()">Começar</button>
@@ -53,7 +45,7 @@
     <div id="pista-container" class="hidden">
         <h2 id="pista"></h2>
         <p id="descricao"></p>
-        <button onclick="verificarLocalizacao()">Verificar Localização</button>
+        <button onclick="verProximaPista()">Próxima Pista</button>
         <p id="score">Pontuação: 0</p>
 
         <div id="assistente">
@@ -64,11 +56,6 @@
     </div>
 
     <script>
-        const usuarios = {
-            "jogador1": "1234",
-            "jogador2": "5678"
-        };
-
         let pistas = [
             { charada: "🌊 Um espelho d’água cercado por dunas e natureza. Casais adoram remar aqui.", descricao: "Lagoa da Conceição: Passeios de pedalinho, bares charmosos e uma vista incrível!" },
             { charada: "🌉 Uma ponte que une passado e presente.", descricao: "Ponte Hercílio Luz: O maior cartão-postal de Florianópolis, inaugurado em 1926." },
@@ -81,21 +68,7 @@
             { charada: "🐳 Um santuário ecológico onde baleias francas visitam no inverno.", descricao: "Praia do Rosa: Um dos melhores pontos de observação de baleias no Brasil." }
         ];
 
-        let indiceAtual = 0, score = 0, usuarioAtual = "";
-
-        function autenticar() {
-            let usuario = document.getElementById("usuario").value;
-            let senha = document.getElementById("senha").value;
-
-            if (usuarios[usuario] && usuarios[usuario] === senha) {
-                usuarioAtual = usuario;
-                document.getElementById("login-container").classList.add("hidden");
-                document.getElementById("inicio").classList.remove("hidden");
-                document.getElementById("boas-vindas").textContent = `Bem-vindo, ${usuario}! 🌟`;
-            } else {
-                alert("Usuário ou senha incorretos!");
-            }
-        }
+        let indiceAtual = 0, score = 0;
 
         function iniciarJogo() {
             let chave = document.getElementById("chave").value.trim();
@@ -117,13 +90,6 @@
             document.getElementById("descricao").textContent = pistas[indiceAtual].descricao;
         }
 
-        function verificarLocalizacao() {
-            const latUsuario = parseFloat(prompt("Digite a latitude atual:"));
-            const longUsuario = parseFloat(prompt("Digite a longitude atual:"));
-            alert(`Latitude: ${latUsuario}, Longitude: ${longUsuario}`);
-            verProximaPista();
-        }
-
         function verProximaPista() {
             score += 10;
             document.getElementById("score").textContent = `Pontuação: ${score}`;
@@ -131,7 +97,7 @@
             if (++indiceAtual < pistas.length) {
                 mostrarPista();
             } else {
-                alert(`🎉 Parabéns, ${usuarioAtual}! Você completou a caça ao tesouro!`);
+                alert("🎉 Parabéns! Você completou a caça ao tesouro!");
             }
         }
 
