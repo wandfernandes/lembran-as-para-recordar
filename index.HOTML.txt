@@ -132,7 +132,7 @@
     <div id="pista-container">
         <h2 id="pista"></h2>
         <p id="mensagem"></p>
-        <button onclick="tirarFoto()">Tirar Foto</button>
+        <button onclick="verificarLocalizacao()">Verificar Localização</button>
         <div id="mapa"></div>
         <p id="score">Pontuação: 0</p>
         <video id="video" autoplay></video>
@@ -219,9 +219,8 @@
         }
 
         function verificarLocalizacao() {
-            // Coordenadas fixas para facilitar os testes
-            const latUsuario = -27.5969;  // Latitude da Lagoa da Conceição
-            const longUsuario = -48.4846; // Longitude da Lagoa da Conceição
+            const latUsuario = parseFloat(prompt("Digite a latitude atual:"));
+            const longUsuario = parseFloat(prompt("Digite a longitude atual:"));
             const latPista = pistas[indiceAtual].latitude;
             const longPista = pistas[indiceAtual].longitude;
 
