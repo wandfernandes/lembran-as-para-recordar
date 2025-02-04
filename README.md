@@ -80,9 +80,15 @@
             mostrarPista();
         }
 
+        // Função de embaralhamento mais confiável
         function embaralharPistas(chave) {
             let seed = chave.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            return [...pistas].sort(() => (seed = (seed * 33) % 1000003) % 2 ? 1 : -1);
+            let shuffled = [...pistas];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                let j = Math.floor((seed * (i + 1)) % shuffled.length);
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
         }
 
         function mostrarPista() {
