@@ -53,7 +53,7 @@
     <div id="pista-container" class="hidden">
         <h2 id="pista"></h2>
         <p id="descricao"></p>
-        <button onclick="verProximaPista()">Próxima Pista</button>
+        <button onclick="verificarLocalizacao()">Verificar Localização</button>
         <p id="score">Pontuação: 0</p>
 
         <div id="assistente">
@@ -115,6 +115,13 @@
         function mostrarPista() {
             document.getElementById("pista").textContent = pistas[indiceAtual].charada;
             document.getElementById("descricao").textContent = pistas[indiceAtual].descricao;
+        }
+
+        function verificarLocalizacao() {
+            const latUsuario = parseFloat(prompt("Digite a latitude atual:"));
+            const longUsuario = parseFloat(prompt("Digite a longitude atual:"));
+            alert(`Latitude: ${latUsuario}, Longitude: ${longUsuario}`);
+            verProximaPista();
         }
 
         function verProximaPista() {
