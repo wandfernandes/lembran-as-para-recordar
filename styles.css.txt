@@ -52,6 +52,11 @@ button:hover {
     margin-top: 10px;
 }
 
+#score {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
