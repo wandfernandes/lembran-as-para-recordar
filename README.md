@@ -20,7 +20,7 @@
             font-size: 3em;
             margin-top: 20px;
         }
-        #inicio, #pista-container, #medalhas-container, #foto-container {
+        #inicio, #pista-container, #medalhas-container {
             margin-top: 50px;
         }
         .hidden {
@@ -32,16 +32,9 @@
             border-radius: 10px;
             margin-top: 20px;
         }
-        #score-board {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-        }
-        .medal {
-            background: gold;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
+        #cronometro {
+            font-size: 1.5em;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -56,23 +49,14 @@
     <div id="pista-container" class="hidden">
         <h2 id="pista"></h2>
         <p id="descricao"></p>
-        <button onclick="tirarFoto()">Tire uma Foto do Local</button>
+        <button onclick="verProximaPista()">Próxima Pista</button>
         <p id="score">Pontuação: 0</p>
+        <div id="cronometro">Tempo restante: 00:00</div>
 
         <div id="assistente">
             <h3>💡 Assistente Virtual 💡</h3>
             <p id="dica">Clique no botão para receber uma dica!</p>
             <button onclick="fornecerDica()">Receber Dica</button>
-        </div>
-
-        <div id="foto-container" class="hidden">
-            <p>Capture a foto do local e suba para continuar.</p>
-            <input type="file" id="foto-upload" accept="image/*" onchange="verificarFoto()">
-        </div>
-
-        <div id="score-board">
-            <div class="medal" id="medalha-historico">🏅 Medalha Histórica</div>
-            <div class="medal" id="medalha-natureza">🏅 Medalha Aventureiro</div>
         </div>
     </div>
 
@@ -89,7 +73,9 @@
             { charada: "🐳 Um santuário ecológico onde baleias francas visitam no inverno.", descricao: "Praia do Rosa: Um dos melhores pontos de observação de baleias no Brasil." }
         ];
 
-        let indiceAtual = 0, score = 0, dicasUsadas = 0;
+        let indiceAtual = 0, score = 0, moedas = 0;
+        let tempoRestante = 300;  // 5 minutos por pista
+        let cronometroInterval;
 
         function iniciarJogo() {
             let chave = document.getElementById("chave").value.trim();
@@ -99,16 +85,12 @@
             document.getElementById("inicio").classList.add("hidden");
             document.getElementById("pista-container").classList.remove("hidden");
             mostrarPista();
+            iniciarCronometro();
         }
 
         function embaralharPistas(chave) {
             let seed = chave.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            let shuffled = [...pistas];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                let j = Math.floor((seed * (i + 1)) % shuffled.length);
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
+            return [...pistas].sort(() => (seed = (seed * 33) % 1000003) % 2 ? 1 : -1);
         }
 
         function mostrarPista() {
@@ -116,25 +98,29 @@
             document.getElementById("descricao").textContent = pistas[indiceAtual].descricao;
         }
 
-        function tirarFoto() {
-            document.getElementById("foto-container").classList.remove("hidden");
-        }
-
-        function verificarFoto() {
-            const fileInput = document.getElementById("foto-upload");
-            if (fileInput.files.length > 0) {
-                alert("Foto enviada! Agora, vamos para a próxima pista.");
-                score += 10;
-                document.getElementById("score").textContent = `Pontuação: ${score}`;
-                verProximaPista();
-            } else {
-                alert("Por favor, tire uma foto do local indicado.");
-            }
+        function iniciarCronometro() {
+            cronometroInterval = setInterval(() => {
+                if (tempoRestante <= 0) {
+                    clearInterval(cronometroInterval);
+                    alert("Tempo esgotado! Você perdeu a oportunidade de continuar.");
+                } else {
+                    tempoRestante--;
+                    let minutos = Math.floor(tempoRestante / 60);
+                    let segundos = tempoRestante % 60;
+                    document.getElementById("cronometro").textContent = `Tempo restante: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+                }
+            }, 1000);
         }
 
         function verProximaPista() {
+            score += 10;
+            moedas += 5;
+            document.getElementById("score").textContent = `Pontuação: ${score}`;
+            document.getElementById("moedas").textContent = `Moedas: ${moedas}`;
+
             if (++indiceAtual < pistas.length) {
                 mostrarPista();
+                tempoRestante = 300; // Resetando o tempo para 5 minutos na próxima pista
             } else {
                 alert("🎉 Parabéns! Você completou a caça ao tesouro!");
                 document.getElementById("pista-container").classList.add("hidden");
@@ -143,20 +129,25 @@
         }
 
         function fornecerDica() {
-            if (dicasUsadas < 3) {
-                dicasUsadas++;
-                let dicas = [
-                    "Preste atenção nos detalhes da pista! Alguma palavra-chave pode ajudar.",
-                    "Pense em locais turísticos famosos de Florianópolis.",
-                    "Se a pista menciona água, pode ser uma praia, lagoa ou ponte!",
-                    "Algumas pistas fazem referência a locais históricos.",
-                    "Se o local tem trilha, pode ser uma praia mais isolada!",
-                    "Releia a charada e tente associar com lugares conhecidos da cidade."
-                ];
-                let dicaAleatoria = dicas[Math.floor(Math.random() * dicas.length)];
-                document.getElementById("dica").textContent = dicaAleatoria;
+            let dicas = [
+                "Preste atenção nos detalhes da pista! Alguma palavra-chave pode ajudar.",
+                "Pense em locais turísticos famosos de Florianópolis.",
+                "Se a pista menciona água, pode ser uma praia, lagoa ou ponte!",
+                "Algumas pistas fazem referência a locais históricos.",
+                "Se o local tem trilha, pode ser uma praia mais isolada!",
+                "Releia a charada e tente associar com lugares conhecidos da cidade."
+            ];
+            let dicaAleatoria = dicas[Math.floor(Math.random() * dicas.length)];
+            document.getElementById("dica").textContent = dicaAleatoria;
+        }
+
+        // Função para pedir foto e validar
+        function pedirFoto() {
+            let fotoTirada = prompt("Tire uma foto do local e digite o nome do arquivo da foto para prosseguir.");
+            if (fotoTirada) {
+                alert("Foto recebida! Avançando para a próxima pista.");
             } else {
-                alert("Você já usou todas as dicas!");
+                alert("Não foi possível validar a foto. Tente novamente.");
             }
         }
     </script>
