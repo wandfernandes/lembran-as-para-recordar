@@ -1,10 +1,10 @@
 const pistasOriginais = [
-    { charada: "🌊 Um espelho d’água cercado por dunas e natureza. Casais adoram remar aqui. Onde estou?", latitude: -27.5969, longitude: -48.4846, nome: "Lagoa da Conceição" },
-    { charada: "🌉 Uma ponte que une passado e presente, iluminando noites românticas. Onde estou?", latitude: -27.5973, longitude: -48.5515, nome: "Ponte Hercílio Luz" },
-    { charada: "🏄‍♂️ Dunas douradas onde aventureiros deslizam ao vento. Um encontro perfeito. Onde estou?", latitude: -27.6206, longitude: -48.4354, nome: "Dunas da Joaquina" },
-    { charada: "🏖️ Um paraíso de luxo e diversão onde o pôr do sol é digno de aplausos. Onde estou?", latitude: -27.4368, longitude: -48.4916, nome: "Praia de Jurerê" },
-    { charada: "🍽️ Frutos do mar, cultura e encontros românticos entre as mesas. Onde estou?", latitude: -27.5951, longitude: -48.5480, nome: "Mercado Público" },
-    { charada: "🌅 No alto da ilha, uma vista que revela toda a beleza de Floripa. Onde estou?", latitude: -27.5888, longitude: -48.5350, nome: "Mirante do Morro da Cruz" }
+    { charada: "🌊 Um espelho d’água cercado por dunas e natureza. Casais adoram remar aqui. Onde estou?", latitude: -27.5969, longitude: -48.4846, nome: "Lagoa da Conceição", info: "A Lagoa da Conceição é um dos pontos turísticos mais famosos de Florianópolis, conhecida por suas águas calmas e belas paisagens." },
+    { charada: "🌉 Uma ponte que une passado e presente, iluminando noites românticas. Onde estou?", latitude: -27.5973, longitude: -48.5515, nome: "Ponte Hercílio Luz", info: "A Ponte Hercílio Luz é um dos principais cartões-postais de Florianópolis, inaugurada em 1926." },
+    { charada: "🏄‍♂️ Dunas douradas onde aventureiros deslizam ao vento. Um encontro perfeito. Onde estou?", latitude: -27.6206, longitude: -48.4354, nome: "Dunas da Joaquina", info: "As Dunas da Joaquina são um famoso local para a prática de sandboard em Florianópolis." },
+    { charada: "🏖️ Um paraíso de luxo e diversão onde o pôr do sol é digno de aplausos. Onde estou?", latitude: -27.4368, longitude: -48.4916, nome: "Praia de Jurerê", info: "A Praia de Jurerê é conhecida por suas casas luxuosas e badaladas festas de verão." },
+    { charada: "🍽️ Frutos do mar, cultura e encontros românticos entre as mesas. Onde estou?", latitude: -27.5951, longitude: -48.5480, nome: "Mercado Público", info: "O Mercado Público de Florianópolis é um ótimo lugar para experimentar frutos do mar frescos." },
+    { charada: "🌅 No alto da ilha, uma vista que revela toda a beleza de Floripa. Onde estou?", latitude: -27.5888, longitude: -48.5350, nome: "Mirante do Morro da Cruz", info: "O Mirante do Morro da Cruz oferece uma vista panorâmica incrível de Florianópolis." }
 ];
 
 let pistas = [];
@@ -23,6 +23,11 @@ function selecionarAvatar(avatar) {
 
 // Iniciar jogo
 function iniciarJogo() {
+    if (!avatarSelecionado) {
+        alert("Selecione um avatar!");
+        return;
+    }
+
     let chave = document.getElementById("chave").value.trim();
     dificuldade = document.getElementById("nivelDificuldade").value;
 
@@ -67,6 +72,7 @@ function hashString(str) {
 function mostrarPista() {
     document.getElementById("pista").textContent = pistas[indiceAtual].charada;
     document.getElementById("mensagem").textContent = `Vá até ${pistas[indiceAtual].nome} e clique no botão abaixo!`;
+    document.getElementById("info").textContent = pistas[indiceAtual].info;
     mostrarMapa(pistas[indiceAtual].latitude, pistas[indiceAtual].longitude);
 }
 
@@ -121,6 +127,10 @@ function desbloquearProximaPista() {
     const somCorreto = document.getElementById("somCorreto");
     somCorreto.play();
     document.getElementById("mensagem").textContent = `Parabéns! Você encontrou a próxima pista!`;
+    document.getElementById("mensagem").classList.add('correct');
+    setTimeout(() => {
+        document.getElementById("mensagem").classList.remove('correct');
+    }, 1000);
     indiceAtual++;
     if (indiceAtual < pistas.length) {
         setTimeout(() => {
@@ -130,6 +140,7 @@ function desbloquearProximaPista() {
     } else {
         document.getElementById("pista").textContent = "🎉 Parabéns! Você encontrou o tesouro romântico! 🎁";
         document.getElementById("mensagem").textContent = "";
+        ganharMedalha("Todas as Pistas");
     }
 }
 
@@ -150,3 +161,26 @@ function criarCorações() {
         document.body.appendChild(coracao);
     }
 }
+
+// Exibir medalhas
+function exibirMedalhas() {
+    const medalhasContainer = document.getElementById('medalhas');
+    medalhas.forEach(medalha => {
+        const div = document.createElement('div');
+        div.className = 'medalha';
+        div.style.backgroundImage = `url(${medalha.imagem})`;
+        medalhasContainer.appendChild(div);
+    });
+}
+
+// Ganhar medalha
+function ganharMedalha(nome) {
+    const medalha = medalhas.find(m => m.nome === nome);
+    if (medalha) {
+        alert(`Você ganhou a medalha: ${medalha.nome}`);
+        exibirMedalhas();
+    }
+}
+
+// Inicializar medalhas
+exibirMedalhas();
