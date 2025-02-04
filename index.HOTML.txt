@@ -12,9 +12,9 @@
         <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
         <p>Escolha seu avatar romântico:</p>
         <div class="avatar-selection">
-            <img src="https://example.com/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
+            <img src="assets/images/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
+            <img src="assets/images/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
+            <img src="assets/images/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
@@ -45,9 +45,9 @@
     </div>
 
     <!-- Adicionando sons -->
-    <audio id="somCorreto" src="https://www.soundjay.com/button/beep-07.wav"></audio>
-    <audio id="somIncorreto" src="https://www.soundjay.com/button/beep-10.wav"></audio>
-    <audio id="musicaFundo" src="https://www.soundjay.com/nature/sounds/rain-01.mp3" loop></audio>
+    <audio id="somCorreto" src="assets/sounds/beep-07.wav"></audio>
+    <audio id="somIncorreto" src="assets/sounds/beep-10.wav"></audio>
+    <audio id="musicaFundo" src="assets/sounds/rain-01.mp3" loop></audio>
 
     <script src="script.js"></script>
 </body>
