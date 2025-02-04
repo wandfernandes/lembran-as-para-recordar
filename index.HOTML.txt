@@ -33,9 +33,9 @@
         <button onclick="tirarFoto()">Tirar Foto</button>
         <div id="mapa"></div>
         <p id="score">Pontuação: 0</p>
-        <video id="video" width="320" height="240" autoplay></video>
+        <video id="video" autoplay></video>
         <button id="snap" onclick="capturarFoto()">Capturar</button>
-        <canvas id="canvas" width="320" height="240"></canvas>
+        <canvas id="canvas"></canvas>
     </div>
 
     <!-- Adicionando sons -->
