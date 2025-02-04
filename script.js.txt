@@ -162,6 +162,12 @@ function criarCorações() {
     }
 }
 
+const medalhas = [
+    { nome: "Primeira Pista", imagem: "https://example.com/medalha1.png" },
+    { nome: "Todas as Pistas", imagem: "https://example.com/medalha2.png" },
+    // Adicione mais medalhas conforme necessário
+];
+
 // Exibir medalhas
 function exibirMedalhas() {
     const medalhasContainer = document.getElementById('medalhas');
