@@ -120,6 +120,12 @@
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
+        <p>Selecione o nível de dificuldade:</p>
+        <select id="nivelDificuldade">
+            <option value="facil">Fácil</option>
+            <option value="medio">Médio</option>
+            <option value="dificil">Difícil</option>
+        </select>
         <button onclick="iniciarJogo()">Começar</button>
     </div>
 
@@ -128,6 +134,15 @@
         <p id="mensagem"></p>
         <button onclick="verificarLocalizacao()">Verificar Localização</button>
         <div id="mapa"></div>
+        <p id="score">Pontuação: 0</p>
+        <video id="video" autoplay></video>
+        <button id="snap" onclick="capturarFoto()">Capturar</button>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="medalhas-container">
+        <h2>Medalhas e Troféus</h2>
+        <div id="medalhas"></div>
     </div>
 
     <!-- Adicionando sons -->
@@ -147,7 +162,9 @@
 
         let pistas = [];
         let indiceAtual = 0;
+        let score = 0;
         let avatarSelecionado = '';
+        let dificuldade = 'medio';
 
         function selecionarAvatar(avatar) {
             avatarSelecionado = avatar.alt;
@@ -158,6 +175,8 @@
 
         function iniciarJogo() {
             let chave = document.getElementById("chave").value.trim();
+            dificuldade = document.getElementById("nivelDificuldade").value;
+
             if (chave === "") {
                 alert("Digite uma chave válida!");
                 return;
@@ -200,9 +219,8 @@
         }
 
         function verificarLocalizacao() {
-            // Coordenadas fixas para facilitar os testes
-            const latUsuario = -27.5969;  // Latitude da Lagoa da Conceição
-            const longUsuario = -48.4846; // Longitude da Lagoa da Conceição
+            const latUsuario = parseFloat(prompt("Digite a latitude atual:"));
+            const longUsuario = parseFloat(prompt("Digite a longitude atual:"));
             const latPista = pistas[indiceAtual].latitude;
             const longPista = pistas[indiceAtual].longitude;
 
@@ -258,6 +276,64 @@
                 document.body.appendChild(coracao);
             }
         }
+
+        function tirarFoto() {
+            const video = document.getElementById('video');
+            const constraints = {
+                video: { facingMode: 'environment' }
+            };
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    document.getElementById('snap').style.display = 'block';
+                })
+                .catch((err) => {
+                    console.error('Erro ao acessar a câmera: ', err);
+                });
+        }
+
+        function capturarFoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            desbloquearProximaPista();
+            atualizarPontuacao(10); // Adiciona 10 pontos
+        }
+
+        function atualizarPontuacao(pontos) {
+            score += pontos;
+            document.getElementById("score").textContent = `Pontuação: ${score}`;
+        }
+
+        const medalhas = [
+            { nome: "Primeira Pista", imagem: "https://example.com/medalha1.png" },
+            { nome: "Todas as Pistas", imagem: "https://example.com/medalha2.png" },
+            // Adicione mais medalhas conforme necessário
+        ];
+
+        function exibirMedalhas() {
+            const medalhasContainer = document.getElementById('medalhas');
+            medalhas.forEach(medalha => {
+                const div = document.createElement('div');
+                div.className = 'medalha';
+                div.style.backgroundImage = `url(${medalha.imagem})`;
+                medalhasContainer.appendChild(div);
+            });
+        }
+
+        function ganharMedalha(nome) {
+            const medalha = medalhas.find(m => m.nome === nome);
+            if (medalha) {
+                alert(`Você ganhou a medalha: ${medalha.nome}`);
+                exibirMedalhas();
+            }
+        }
+
+        exibirMedalhas();
     </script>
 </body>
 </html>
