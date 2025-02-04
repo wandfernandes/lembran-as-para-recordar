@@ -206,8 +206,7 @@
         }
 
         function mostrarMapa(lat, long) {
-            document.getElementById("mapa").innerHTML = `<iframe width="100%" height="300" frameborder="0"
-                src="https://www.google.com/maps?q=${lat},${long}&output=embed"></iframe>`;
+            document.getElementById("mapa").innerHTML = `<iframe width="100%" height="300" frameborder="0" src="https://www.google.com/maps?q=${lat},${long}&output=embed"></iframe>`;
         }
 
         function calcularDistancia(lat1, lon1, lat2, lon2) {
