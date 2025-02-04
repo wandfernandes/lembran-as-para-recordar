@@ -114,9 +114,9 @@
         <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
         <p>Escolha seu avatar romântico:</p>
         <div class="avatar-selection">
-            <img src="https://example.com/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar('avatar1')">
-            <img src="https://example.com/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar('avatar2')">
-            <img src="https://example.com/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar('avatar3')">
+            <img src="https://example.com/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
+            <img src="https://example.com/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
+            <img src="https://example.com/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
@@ -150,10 +150,10 @@
         let avatarSelecionado = '';
 
         function selecionarAvatar(avatar) {
-            avatarSelecionado = avatar;
+            avatarSelecionado = avatar.alt;
             const avatares = document.querySelectorAll('.avatar');
             avatares.forEach(av => av.style.borderColor = 'transparent');
-            document.querySelector([alt="${avatar.split(' ').join('')}"]).style.borderColor = '#ff6f91';
+            avatar.style.borderColor = '#ff6f91';
         }
 
         function iniciarJogo() {
@@ -195,7 +195,7 @@
 
         function mostrarPista() {
             document.getElementById("pista").textContent = pistas[indiceAtual].charada;
-            document.getElementById("mensagem").textContent = Vá até ${pistas[indiceAtual].nome} e clique no botão abaixo!;
+            document.getElementById("mensagem").textContent = `Vá até ${pistas[indiceAtual].nome} e clique no botão abaixo!`;
             mostrarMapa(pistas[indiceAtual].latitude, pistas[indiceAtual].longitude);
         }
 
@@ -235,13 +235,7 @@
         function desbloquearProximaPista() {
             const somCorreto = document.getElementById("somCorreto");
             somCorreto.play();
-            document.getElementById("mensagem").textContent = pistas[indiceAtual].proximaPista;
-            const qrCodeImage = document.createElement('img');
-            qrCodeImage.src = pistas[indiceAtual].qrCode;
-            qrCodeImage.alt = "QR Code";
-            qrCodeImage.style.maxWidth = "200px";
-            document.getElementById("mensagem").appendChild(qrCodeImage);
-            mostrarMapa(pistas[indiceAtual].latitude, pistas[indiceAtual].longitude);
+            document.getElementById("mensagem").textContent = `Parabéns! Você encontrou a próxima pista!`;
             indiceAtual++;
             if (indiceAtual < pistas.length) {
                 setTimeout(() => {
@@ -259,12 +253,11 @@
             for (let i = 0; i < numCoracoes; i++) {
                 const coracao = document.createElement('div');
                 coracao.className = 'heart';
-                coracao.style.left = ${Math.random() * 100}vw;
-                coracao.style.animationDuration = ${Math.random() * 5 + 5}s;
+                coracao.style.left = `${Math.random() * 100}vw`;
+                coracao.style.animationDuration = `${Math.random() * 5 + 5}s`;
                 document.body.appendChild(coracao);
             }
         }
     </script>
 </body>
 </html>
-
