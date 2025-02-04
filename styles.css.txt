@@ -119,3 +119,28 @@ button:hover {
     50% { transform: translateY(-100px); }
     100% { transform: translateY(0); }
 }
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    #pista-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+
+    #mapa {
+        height: 200px;
+    }
+
+    #video, #canvas {
+        width: 100%;
+        height: auto;
+    }
+}
