@@ -1,4 +1,3 @@
-/* Template de design vibrante e moderno */
 body {
     font-family: 'Poppins', sans-serif;
     background: url('https://drive.google.com/uc?export=view&id=1miMk1WTVpS_tOcfJNYrD-B_b2uxdAtc_') no-repeat center center fixed;
