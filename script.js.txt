@@ -13,6 +13,157 @@ let score = 0;
 let avatarSelecionado = '';
 let dificuldade = 'medio';
 
+// Selecionar avatar
+function selecionarAvatar(avatar) {
+    avatarSelecionado = avatar;
+    const avatares = document.querySelectorAll('.avatar');
+    avatares.forEach(av => av.style.borderColor = 'transparent');
+    avatar.style.borderColor = '#ff6f91';
+}
+
+// Iniciar jogo
+function iniciarJogo() {
+    let chave = document.getElementById("chave").value.trim();
+    dificuldade = document.getElementById("nivelDificuldade").value;
+
+    if (chave === "") {
+        alert("Digite uma chave válida!");
+        return;
+    }
+
+    pistas = embaralharPistas(chave);
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("pista-container").style.display = "block";
+    mostrarPista();
+    document.getElementById("musicaFundo").play();
+    criarCorações();
+}
+
+// Embaralhar pistas
+function embaralharPistas(chave) {
+    let seed = hashString(chave);
+    let pistasEmbaralhadas = [...pistasOriginais];
+
+    for (let i = pistasEmbaralhadas.length - 1; i > 0; i--) {
+        let j = seed % (i + 1);
+        [pistasEmbaralhadas[i], pistasEmbaralhadas[j]] = [pistasEmbaralhadas[j], pistasEmbaralhadas[i]];
+        seed = (seed * 33) % 1000003;
+    }
+
+    return pistasEmbaralhadas;
+}
+
+// Hash da chave
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash * 31 + str.charCodeAt(i)) % 1000003;
+    }
+    return hash;
+}
+
+// Mostrar pista
+function mostrarPista() {
+    document.getElementById("pista").textContent = pistas[indiceAtual].charada;
+    document.getElementById("mensagem").textContent = `Vá até ${pistas[indiceAtual].nome} e clique no botão abaixo!`;
+    mostrarMapa(pistas[indiceAtual].latitude, pistas[indiceAtual].longitude);
+}
+
+// Tirar foto
+function tirarFoto() {
+    const video = document.getElementById('video');
+    const constraints = {
+        video: { facingMode: 'environment' }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+            video.srcObject = stream;
+            video.style.display = 'block';
+            document.getElementById('snap').style.display = 'block';
+        })
+        .catch((err) => {
+            console.error('Erro ao acessar a câmera: ', err);
+        });
+}
+
+// Capturar foto
+function capturarFoto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    desbloquearProximaPista();
+    atualizarPontuacao(10); // Adiciona 10 pontos
+}
+
+// Mostrar mapa
+function mostrarMapa(lat, long) {
+    document.getElementById("mapa").innerHTML = `<iframe width="100%" height="300" frameborder="0"
+        src="https://www.google.com/maps?q=${lat},${long}&output=embed"></iframe>`;
+}
+
+// Calcular distância
+function calcularDistancia(lat1, lon1, lat2, lon2) {
+    const R = 6371; 
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+}
+
+// Desbloquear próxima pista
+function desbloquearProximaPista() {
+    const somCorreto = document.getElementById("somCorreto");
+    somCorreto.play();
+    document.getElementById("mensagem").textContent = `Parabéns! Você encontrou a próxima pista!`;
+    indiceAtual++;
+    if (indiceAtual < pistas.length) {
+        setTimeout(() => {
+            mostrarPista();
+            document.getElementById("mensagem").textContent = "";
+        }, 3000);
+    } else {
+        document.getElementById("pista").textContent = "🎉 Parabéns! Você encontrou o tesouro romântico! 🎁";
+        document.getElementById("mensagem").textContent = "";
+    }
+}
+
+// Atualizar pontuação
+function atualizarPontuacao(pontos) {
+    score += pontos;
+    document.getElementById("score").textContent = `Pontuação: ${score}`;
+}
+
+// Criar corações animados
+function criarCorações() {
+    const numCoracoes = 20;
+    for (let i = 0; i < numCoracoes; i++) {
+        const coracao = document.createElement('div');
+        coracao.className = 'heart';
+        coracao.style.left = `${Math.random() * 100}vw`;
+        coracao.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        document.body.appendChild(coracao);
+    }
+} pistasOriginais = [
+    { charada: "🌊 Um espelho d’água cercado por dunas e natureza. Casais adoram remar aqui. Onde estou?", latitude: -27.5969, longitude: -48.4846, nome: "Lagoa da Conceição" },
+    { charada: "🌉 Uma ponte que une passado e presente, iluminando noites românticas. Onde estou?", latitude: -27.5973, longitude: -48.5515, nome: "Ponte Hercílio Luz" },
+    { charada: "🏄‍♂️ Dunas douradas onde aventureiros deslizam ao vento. Um encontro perfeito. Onde estou?", latitude: -27.6206, longitude: -48.4354, nome: "Dunas da Joaquina" },
+    { charada: "🏖️ Um paraíso de luxo e diversão onde o pôr do sol é digno de aplausos. Onde estou?", latitude: -27.4368, longitude: -48.4916, nome: "Praia de Jurerê" },
+    { charada: "🍽️ Frutos do mar, cultura e encontros românticos entre as mesas. Onde estou?", latitude: -27.5951, longitude: -48.5480, nome: "Mercado Público" },
+    { charada: "🌅 No alto da ilha, uma vista que revela toda a beleza de Floripa. Onde estou?", latitude: -27.5888, longitude: -48.5350, nome: "Mirante do Morro da Cruz" }
+];
+
+let pistas = [];
+let indiceAtual = 0;
+let score = 0;
+let avatarSelecionado = '';
+let dificuldade = 'medio';
+
 function selecionarAvatar(avatar) {
     avatarSelecionado = avatar;
     const avatares = document.querySelectorAll('.avatar');
