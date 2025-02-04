@@ -114,9 +114,9 @@
         <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
         <p>Escolha seu avatar romântico:</p>
         <div class="avatar-selection">
-            <img src="https://example.com/avatar1.png" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar2.png" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
-            <img src="https://example.com/avatar3.png" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/file/d/1q1K0_alcBPs84HewUL54WS9WYf68lG_A/view?usp=drive_link" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/file/d/13gZHVmLwcQn4eq7rXo-19BQlboq6vZLV/view?usp=drive_link" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/file/d/1mh3j-23dMaKB2DtyyB5hE8ZUtRzfcHkk/view?usp=drive_link" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
