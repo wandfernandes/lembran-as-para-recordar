@@ -21,6 +21,136 @@
             font-size: 3em;
             margin-top: 20px;
         }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s;
+        }
+        button {
+            padding: 15px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #ff4081;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #e91e63;
+            transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="auth-container" class="container">
+        <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
+        <p>Preencha seus dados para começar:</p>
+        <input type="text" id="nome" placeholder="Seu Nome"><br><br>
+        <input type="text" id="cidade" placeholder="Sua Cidade"><br><br>
+        <input type="date" id="dataAcesso"><br><br>
+        <button onclick="autenticarUsuario()">Entrar</button>
+    </div>
+
+    <div id="inicio" class="container" style="display: none;">
+        <p>Escolha seu avatar romântico:</p>
+        <div class="avatar-selection">
+            <img src="https://drive.google.com/uc?export=view&id=1q1K0_alcBPs84HewUL54WS9WYf68lG_A" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/uc?export=view&id=13gZHVmLwcQn4eq7rXo-19BQlboq6vZLV" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/uc?export=view&id=1mh3j-23dMaKB2DtyyB5hE8ZUtRzfcHkk" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
+        </div>
+        <button onclick="iniciarJogo()">Começar</button>
+    </div>
+
+    <div id="pista-container" class="container" style="display: none;">
+        <h2 id="pista"></h2>
+        <p id="mensagem"></p>
+        <button onclick="verificarLocalizacao()">Verificar Localização</button>
+        <video id="video" autoplay></video>
+        <button id="snap" onclick="capturarFoto()" style="display: none;">Capturar Foto</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <script>
+        function autenticarUsuario() {
+            const nome = document.getElementById("nome").value.trim();
+            const cidade = document.getElementById("cidade").value.trim();
+            const dataAcesso = document.getElementById("dataAcesso").value;
+
+            if (nome === "" || cidade === "" || dataAcesso === "") {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            document.getElementById("auth-container").style.display = "none";
+            document.getElementById("inicio").style.display = "block";
+        }
+
+        function iniciarJogo() {
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("pista-container").style.display = "block";
+        }
+
+        function verificarLocalizacao() {
+            const video = document.getElementById("video");
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.style.display = "block";
+                    document.getElementById("snap").style.display = "block";
+                })
+                .catch(err => {
+                    alert("Erro ao acessar a câmera");
+                    console.error(err);
+                });
+        }
+
+        function capturarFoto() {
+            const video = document.getElementById("video");
+            const canvas = document.getElementById("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            video.srcObject.getTracks().forEach(track => track.stop());
+            alert("Foto registrada! Próxima fase liberada!");
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caça ao Tesouro - Florianópolis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: url('https://drive.google.com/uc?export=view&id=1miMk1WTVpS_tOcfJNYrD-B_b2uxdAtc_') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            margin-top: 20px;
+        }
         #inicio {
             margin-top: 50px;
             opacity: 1;
