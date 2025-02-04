@@ -18,6 +18,12 @@
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
+        <p>Selecione o nível de dificuldade:</p>
+        <select id="nivelDificuldade">
+            <option value="facil">Fácil</option>
+            <option value="medio">Médio</option>
+            <option value="dificil">Difícil</option>
+        </select>
         <button onclick="iniciarJogo()">Começar</button>
     </div>
 
@@ -26,6 +32,7 @@
         <p id="mensagem"></p>
         <button onclick="verificarLocalizacao()">Verificar Localização</button>
         <div id="mapa"></div>
+        <p id="score">Pontuação: 0</p>
     </div>
 
     <!-- Adicionando sons -->
