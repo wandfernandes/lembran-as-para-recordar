@@ -20,7 +20,7 @@
             font-size: 3em;
             margin-top: 20px;
         }
-        #inicio, #pista-container, #medalhas-container {
+        #inicio, #pista-container, #medalhas-container, #foto-container {
             margin-top: 50px;
         }
         .hidden {
@@ -56,13 +56,18 @@
     <div id="pista-container" class="hidden">
         <h2 id="pista"></h2>
         <p id="descricao"></p>
-        <button onclick="verProximaPista()">Próxima Pista</button>
+        <button onclick="tirarFoto()">Tire uma Foto do Local</button>
         <p id="score">Pontuação: 0</p>
 
         <div id="assistente">
             <h3>💡 Assistente Virtual 💡</h3>
             <p id="dica">Clique no botão para receber uma dica!</p>
             <button onclick="fornecerDica()">Receber Dica</button>
+        </div>
+
+        <div id="foto-container" class="hidden">
+            <p>Capture a foto do local e suba para continuar.</p>
+            <input type="file" id="foto-upload" accept="image/*" onchange="verificarFoto()">
         </div>
 
         <div id="score-board">
@@ -84,8 +89,7 @@
             { charada: "🐳 Um santuário ecológico onde baleias francas visitam no inverno.", descricao: "Praia do Rosa: Um dos melhores pontos de observação de baleias no Brasil." }
         ];
 
-        let indiceAtual = 0, score = 0;
-        let medalhas = { historico: false, natureza: false };
+        let indiceAtual = 0, score = 0, dicasUsadas = 0;
 
         function iniciarJogo() {
             let chave = document.getElementById("chave").value.trim();
@@ -112,19 +116,23 @@
             document.getElementById("descricao").textContent = pistas[indiceAtual].descricao;
         }
 
+        function tirarFoto() {
+            document.getElementById("foto-container").classList.remove("hidden");
+        }
+
+        function verificarFoto() {
+            const fileInput = document.getElementById("foto-upload");
+            if (fileInput.files.length > 0) {
+                alert("Foto enviada! Agora, vamos para a próxima pista.");
+                score += 10;
+                document.getElementById("score").textContent = `Pontuação: ${score}`;
+                verProximaPista();
+            } else {
+                alert("Por favor, tire uma foto do local indicado.");
+            }
+        }
+
         function verProximaPista() {
-            score += 10;
-            document.getElementById("score").textContent = `Pontuação: ${score}`;
-
-            if (indiceAtual === 0) {
-                medalhas.historico = true;
-                document.getElementById("medalha-historico").style.display = "block";
-            }
-            if (indiceAtual === 5) {
-                medalhas.natureza = true;
-                document.getElementById("medalha-natureza").style.display = "block";
-            }
-
             if (++indiceAtual < pistas.length) {
                 mostrarPista();
             } else {
@@ -135,16 +143,21 @@
         }
 
         function fornecerDica() {
-            let dicas = [
-                "Preste atenção nos detalhes da pista! Alguma palavra-chave pode ajudar.",
-                "Pense em locais turísticos famosos de Florianópolis.",
-                "Se a pista menciona água, pode ser uma praia, lagoa ou ponte!",
-                "Algumas pistas fazem referência a locais históricos.",
-                "Se o local tem trilha, pode ser uma praia mais isolada!",
-                "Releia a charada e tente associar com lugares conhecidos da cidade."
-            ];
-            let dicaAleatoria = dicas[Math.floor(Math.random() * dicas.length)];
-            document.getElementById("dica").textContent = dicaAleatoria;
+            if (dicasUsadas < 3) {
+                dicasUsadas++;
+                let dicas = [
+                    "Preste atenção nos detalhes da pista! Alguma palavra-chave pode ajudar.",
+                    "Pense em locais turísticos famosos de Florianópolis.",
+                    "Se a pista menciona água, pode ser uma praia, lagoa ou ponte!",
+                    "Algumas pistas fazem referência a locais históricos.",
+                    "Se o local tem trilha, pode ser uma praia mais isolada!",
+                    "Releia a charada e tente associar com lugares conhecidos da cidade."
+                ];
+                let dicaAleatoria = dicas[Math.floor(Math.random() * dicas.length)];
+                document.getElementById("dica").textContent = dicaAleatoria;
+            } else {
+                alert("Você já usou todas as dicas!");
+            }
         }
     </script>
 </body>
