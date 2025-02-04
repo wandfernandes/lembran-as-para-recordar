@@ -70,12 +70,18 @@
         <h1>🌸 Caça ao Tesouro - Florianópolis 🌸</h1>
         <p>Escolha seu avatar romântico:</p>
         <div class="avatar-selection">
-            <img src="https://drive.google.com/uc?export=view&id=1q1K0_alcBPs84HewUL54WS9WYf68lG_A" class="avatar" onclick="selecionarAvatar(this)">
-            <img src="https://drive.google.com/uc?export=view&id=13gZHVmLwcQn4eq7rXo-19BQlboq6vZLV" class="avatar" onclick="selecionarAvatar(this)">
-            <img src="https://drive.google.com/uc?export=view&id=1mh3j-23dMaKB2DtyyB5hE8ZUtRzfcHkk" class="avatar" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/uc?export=view&id=1q1K0_alcBPs84HewUL54WS9WYf68lG_A" class="avatar" alt="Avatar 1" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/uc?export=view&id=13gZHVmLwcQn4eq7rXo-19BQlboq6vZLV" class="avatar" alt="Avatar 2" onclick="selecionarAvatar(this)">
+            <img src="https://drive.google.com/uc?export=view&id=1mh3j-23dMaKB2DtyyB5hE8ZUtRzfcHkk" class="avatar" alt="Avatar 3" onclick="selecionarAvatar(this)">
         </div>
         <p>Insira sua chave de acesso:</p>
         <input type="text" id="chave" placeholder="Digite sua chave">
+        <p>Selecione o nível de dificuldade:</p>
+        <select id="nivelDificuldade">
+            <option value="facil">Fácil</option>
+            <option value="medio">Médio</option>
+            <option value="dificil">Difícil</option>
+        </select>
         <button onclick="iniciarJogo()">Começar</button>
     </div>
 
@@ -84,6 +90,7 @@
         <p id="mensagem"></p>
         <button onclick="verificarLocalizacao()">Verificar Localização</button>
         <div id="mapa"></div>
+        <p id="score">Pontuação: 0</p>
     </div>
 
     <div id="medalhas-container">
@@ -91,52 +98,139 @@
         <div id="medalhas"></div>
     </div>
 
+    <!-- Adicionando sons -->
+    <audio id="somCorreto" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+    <audio id="somIncorreto" src="https://www.soundjay.com/button/beep-10.wav"></audio>
+    <audio id="musicaFundo" src="https://www.soundjay.com/nature/sounds/rain-01.mp3" loop></audio>
+
     <script>
+        const pistasOriginais = [
+            { charada: "🌊 Um espelho d’água cercado por dunas e natureza. Casais adoram remar aqui. Onde estou?", latitude: -27.5969, longitude: -48.4846, nome: "Lagoa da Conceição" },
+            { charada: "🌉 Uma ponte que une passado e presente, iluminando noites românticas. Onde estou?", latitude: -27.5973, longitude: -48.5515, nome: "Ponte Hercílio Luz" },
+            { charada: "🏄‍♂️ Dunas douradas onde aventureiros deslizam ao vento. Um encontro perfeito. Onde estou?", latitude: -27.6206, longitude: -48.4354, nome: "Dunas da Joaquina" },
+            { charada: "🏖️ Um paraíso de luxo e diversão onde o pôr do sol é digno de aplausos. Onde estou?", latitude: -27.4368, longitude: -48.4916, nome: "Praia de Jurerê" },
+            { charada: "🍽️ Frutos do mar, cultura e encontros românticos entre as mesas. Onde estou?", latitude: -27.5951, longitude: -48.5480, nome: "Mercado Público" },
+            { charada: "🌅 No alto da ilha, uma vista que revela toda a beleza de Floripa. Onde estou?", latitude: -27.5888, longitude: -48.5350, nome: "Mirante do Morro da Cruz" }
+        ];
+
+        let pistas = [];
+        let indiceAtual = 0;
+        let score = 0;
+        let avatarSelecionado = '';
+        let dificuldade = 'medio';
+
         function selecionarAvatar(avatar) {
-            document.querySelectorAll('.avatar').forEach(av => av.classList.remove('avatar-selected'));
+            avatarSelecionado = avatar.alt;
+            const avatares = document.querySelectorAll('.avatar');
+            avatares.forEach(av => av.classList.remove('avatar-selected'));
             avatar.classList.add('avatar-selected');
         }
 
         function iniciarJogo() {
+            let chave = document.getElementById("chave").value.trim();
+            dificuldade = document.getElementById("nivelDificuldade").value;
+
+            if (chave === "") {
+                alert("Digite uma chave válida!");
+                return;
+            }
+
+            pistas = embaralharPistas(chave);
+
             document.getElementById("inicio").classList.add("fade-out");
             setTimeout(() => {
                 document.getElementById("inicio").style.display = "none";
                 document.getElementById("pista-container").style.display = "block";
                 mostrarPista();
+                document.getElementById("musicaFundo").play();
+                criarCorações();
             }, 1000);
         }
 
+        function embaralharPistas(chave) {
+            let seed = hashString(chave);
+            let pistasEmbaralhadas = [...pistasOriginais];
+
+            for (let i = pistasEmbaralhadas.length - 1; i > 0; i--) {
+                let j = seed % (i + 1);
+                [pistasEmbaralhadas[i], pistasEmbaralhadas[j]] = [pistasEmbaralhadas[j], pistasEmbaralhadas[i]];
+                seed = (seed * 33) % 1000003;
+            }
+
+            return pistasEmbaralhadas;
+        }
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = (hash * 31 + str.charCodeAt(i)) % 1000003;
+            }
+            return hash;
+        }
+
         function mostrarPista() {
-            document.getElementById("pista").textContent = "🌉 Uma ponte que une passado e presente, iluminando noites românticas. Onde estou?";
-            document.getElementById("mensagem").textContent = "Vá até a Ponte Hercílio Luz e clique no botão abaixo!";
+            document.getElementById("pista").textContent = pistas[indiceAtual].charada;
+            document.getElementById("mensagem").textContent = `Vá até ${pistas[indiceAtual].nome} e clique no botão abaixo!`;
+            mostrarMapa(pistas[indiceAtual].latitude, pistas[indiceAtual].longitude);
         }
 
         function verificarLocalizacao() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    let distancia = calcularDistancia(position.coords.latitude, position.coords.longitude, -27.5973, -48.5515);
-                    if (distancia < 0.2) {
-                        desbloquearProximaPista();
-                    } else {
-                        alert("Você ainda não chegou ao local certo!");
-                    }
-                });
+            const latUsuario = parseFloat(prompt("Digite a latitude atual:"));
+            const longUsuario = parseFloat(prompt("Digite a longitude atual:"));
+            const latPista = pistas[indiceAtual].latitude;
+            const longPista = pistas[indiceAtual].longitude;
+
+            const distancia = calcularDistancia(latUsuario, longUsuario, latPista, longPista);
+
+            if (distancia < 0.2) {
+                desbloquearProximaPista();
             } else {
-                alert("Geolocalização não suportada no seu navegador.");
+                document.getElementById("mensagem").textContent = "📍 Você ainda não chegou ao local certo! Continue procurando!";
+                const somIncorreto = document.getElementById("somIncorreto");
+                somIncorreto.play();
             }
+        }
+
+        function mostrarMapa(lat, long) {
+            document.getElementById("mapa").innerHTML = `<iframe width="100%" height="300" frameborder="0"
+                src="https://www.google.com/maps?q=${lat},${long}&output=embed"></iframe>`;
         }
 
         function calcularDistancia(lat1, lon1, lat2, lon2) {
             const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
         }
 
         function desbloquearProximaPista() {
-            alert("Parabéns! Você encontrou a pista correta!");
-            ganharMedalha("Primeira Pista");
+            const somCorreto = document.getElementById("somCorreto");
+            somCorreto.play();
+            document.getElementById("mensagem").textContent = `Parabéns! Você encontrou a próxima pista!`;
+            indiceAtual++;
+            if (indiceAtual < pistas.length) {
+                setTimeout(() => {
+                    mostrarPista();
+                    document.getElementById("mensagem").textContent = "";
+                }, 3000);
+            } else {
+                document.getElementById("pista").textContent = "🎉 Parabéns! Você encontrou o tesouro romântico! 🎁";
+                document.getElementById("mensagem").textContent = "";
+            }
+        }
+
+        function criarCorações() {
+            const numCoracoes = 20;
+            for (let i = 0; i < numCoracoes; i++) {
+                const coracao = document.createElement('div');
+                coracao.className = 'heart';
+                coracao.style.left = `${Math.random() * 100}vw`;
+                coracao.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                document.body.appendChild(coracao);
+            }
         }
 
         function ganharMedalha(nome) {
