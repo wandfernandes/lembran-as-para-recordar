@@ -98,6 +98,8 @@
                 mostrarPista();
             } else {
                 alert("🎉 Parabéns! Você completou a caça ao tesouro!");
+                document.getElementById("pista-container").classList.add("hidden");
+                document.getElementById("inicio").classList.remove("hidden");
             }
         }
 
