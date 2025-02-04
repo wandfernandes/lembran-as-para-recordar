@@ -65,6 +65,23 @@ button:hover {
     height: auto;
 }
 
+#medalhas-container {
+    margin-top: 20px;
+}
+
+#medalhas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.medalha {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    margin: 10px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
