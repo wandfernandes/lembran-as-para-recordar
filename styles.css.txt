@@ -1,8 +1,8 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('https://drive.google.com/uc?export=view&id=1miMk1WTVpS_tOcfJNYrD-B_b2uxdAtc_') no-repeat center center fixed;
+    background: url('https://example.com/background.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: #fff;
+    color: #ffffff;
     margin: 0;
     overflow-x: hidden;
     text-align: center;
@@ -12,21 +12,26 @@ h1 {
     font-family: 'Dancing Script', cursive;
     font-size: 3em;
     margin-top: 20px;
+    color: #ffdd57; /* Amarelo Sol */
 }
 
 #inicio {
     margin-top: 50px;
+    background: rgba(0, 119, 190, 0.8); /* Azul Oceano com transparência */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #pista-container {
     display: none;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
+    background: rgba(0, 191, 165, 0.9); /* Verde Água com transparência */
+    color: #ffffff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     margin: 20px auto;
     max-width: 600px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     animation: fadeIn 1s;
 }
 
@@ -34,7 +39,7 @@ button {
     padding: 15px 20px;
     cursor: pointer;
     border: none;
-    background-color: #ff4081;
+    background-color: #ff6f61; /* Coral */
     color: #ffffff;
     border-radius: 8px;
     font-size: 18px;
@@ -42,7 +47,7 @@ button {
 }
 
 button:hover {
-    background-color: #e91e63;
+    background-color: #e94e39; /* Coral mais escuro */
     transform: scale(1.1);
 }
 
@@ -50,11 +55,14 @@ button:hover {
     width: 100%;
     height: 300px;
     margin-top: 10px;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 #score {
     font-size: 1.5em;
     margin-top: 20px;
+    color: #ffdd57; /* Amarelo Sol */
 }
 
 #video, #canvas {
@@ -63,10 +71,15 @@ button:hover {
     width: 100%;
     max-width: 320px;
     height: auto;
+    border-radius: 15px;
 }
 
 #medalhas-container {
     margin-top: 20px;
+    background: rgba(244, 225, 210, 0.8); /* Areia com transparência */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #medalhas {
@@ -80,6 +93,8 @@ button:hover {
     height: 50px;
     background-size: cover;
     margin: 10px;
+    border-radius: 50%;
+    border: 2px solid #ffdd57; /* Amarelo Sol */
 }
 
 @keyframes fadeIn {
@@ -104,17 +119,17 @@ button:hover {
 
 .avatar:hover {
     transform: scale(1.1);
-    border-color: #ff6f91;
+    border-color: #ff6f91; /* Coral */
 }
 
 .correct {
-    color: green;
+    color: #ffdd57; /* Amarelo Sol */
     font-weight: bold;
     animation: correctAnimation 1s forwards;
 }
 
 .incorrect {
-    color: red;
+    color: #ff6f61; /* Coral */
     font-weight: bold;
     animation: incorrectAnimation 1s forwards;
 }
