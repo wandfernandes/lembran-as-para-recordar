@@ -30,12 +30,18 @@
     <div id="pista-container">
         <h2 id="pista"></h2>
         <p id="mensagem"></p>
+        <p id="info"></p>
         <button onclick="tirarFoto()">Tirar Foto</button>
         <div id="mapa"></div>
         <p id="score">Pontuação: 0</p>
         <video id="video" autoplay></video>
         <button id="snap" onclick="capturarFoto()">Capturar</button>
         <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="medalhas-container">
+        <h2>Medalhas e Troféus</h2>
+        <div id="medalhas"></div>
     </div>
 
     <!-- Adicionando sons -->
